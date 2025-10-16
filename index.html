@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paraná InovaNet – Rede de Startups e Ideias Inovadoras</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- LINK PARA O CSS CUSTOMIZADO -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Main Application Container -->
+    <div id="app">
+
+        <!-- 1. Header/Navigation Bar (Shared) -->
+        <header class="sticky top-0 z-50 bg-white header-shadow">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo and Title -->
+                    <a href="#" class="flex-shrink-0 flex items-center" onclick="showView('home')">
+                        <i class="fa-solid fa-lightbulb text-sky-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">Paraná InovaNet</span>
+                    </a>
+
+                    <!-- Navigation Links (Dynamic) -->
+                    <nav id="nav-links" class="hidden md:flex md:space-x-8 items-center">
+                        <!-- Links for Authenticated Users -->
+                        <a href="#" class="text-gray-600 hover:text-sky-600 font-medium" onclick="showView('feed')">
+                            <i class="fa-solid fa-house mr-1"></i> Feed
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-sky-600 font-medium" onclick="showView('messages')">
+                            <i class="fa-solid fa-message mr-1"></i> Mensagens
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-sky-600 font-medium" onclick="showView('notifications')">
+                            <i class="fa-solid fa-bell mr-1"></i> Notificações
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-sky-600 font-medium" onclick="showView('profile')">
+                            <i class="fa-solid fa-user-circle mr-1"></i> Perfil
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-sky-600 font-medium" onclick="showView('settings')">
+                            <i class="fa-solid fa-gear mr-1"></i> Configurações
+                        </a>
+                        <button id="logout-btn" class="btn-primary btn-green" onclick="handleLogout()">
+                            Sair
+                        </button>
+
+                        <!-- Links for Public Users (Hidden by default) -->
+                        <button id="login-btn" class="btn-primary btn-blue" onclick="showView('login')">
+                            Entrar
+                        </button>
+                        <button id="register-btn" class="btn-primary btn-green" onclick="showView('register')">
+                            Cadastrar
+                        </button>
+                    </nav>
+
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden">
+                        <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-gray-500 hover:text-sky-600 focus:outline-none">
+                            <i class="fa-solid fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 p-4">
+                <!-- Links here are dynamically updated by JS for simplicity, or hardcoded for both states -->
+                <a href="#" class="block py-2 text-gray-600 hover:text-sky-600" onclick="showView('feed'); toggleMobileMenu()">Feed</a>
+                <a href="#" class="block py-2 text-gray-600 hover:text-sky-600" onclick="showView('profile'); toggleMobileMenu()">Perfil</a>
+                <a href="#" class="block py-2 text-gray-600 hover:text-sky-600" onclick="showView('login'); toggleMobileMenu()">Entrar</a>
+                <a href="#" class="block py-2 text-gray-600 hover:text-sky-600" onclick="showView('register'); toggleMobileMenu()">Cadastrar</a>
+                <button class="w-full text-left py-2 text-gray-600 hover:text-sky-600" onclick="handleLogout(); toggleMobileMenu()">Sair</button>
+            </div>
+        </header>
+
+        <!-- Main Content Wrapper -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 view-content">
+
+            <!-- View Containers -->
+
+            <!-- 1. HOME PAGE (Public) -->
+            <section id="home-view" class="view-section hidden">
+                <div class="text-center py-16 bg-white rounded-xl card-shadow mb-12">
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-sky-600 mb-4">
+                        Paraná InovaNet
+                    </h1>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                        Conectando a força empreendedora do Paraná. Uma rede para startups, ideias inovadoras, investidores e talentos de todo o estado.
+                    </p>
+
+                    <!-- Search Bar -->
+                    <div class="max-w-xl mx-auto">
+                        <div class="flex items-center bg-gray-100 rounded-lg p-3 shadow-inner">
+                            <i class="fa-solid fa-magnifying-glass text-gray-400 mr-3"></i>
+                            <input type="text" placeholder="Buscar Startups, Ideias, Usuários..." class="flex-grow bg-transparent focus:outline-none text-gray-700">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Highlights Section -->
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Em Destaque</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card 1: Startup -->
+                    <div class="bg-white p-6 rounded-xl card-shadow hover:ring-2 hover:ring-sky-500 transition duration-300">
+                        <div class="flex items-center mb-4">
+                            <i class="fa-solid fa-rocket text-3xl text-emerald-500 mr-4"></i>
+                            <h3 class="text-xl font-semibold text-gray-800">AgriTech PR</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm">Startup de Curitiba focada em soluções de IA para otimização de colheitas.</p>
+                        <span class="inline-block bg-sky-100 text-sky-700 text-xs font-semibold px-3 py-1 rounded-full">#Agro</span>
+                        <span class="inline-block bg-sky-100 text-sky-700 text-xs font-semibold px-3 py-1 rounded-full">#IA</span>
+                    </div>
+
+                    <!-- Card 2: Innovation Hub -->
+                    <div class="bg-white p-6 rounded-xl card-shadow hover:ring-2 hover:ring-sky-500 transition duration-300">
+                        <div class="flex items-center mb-4">
+                            <i class="fa-solid fa-code-branch text-3xl text-sky-600 mr-4"></i>
+                            <h3 class="text-xl font-semibold text-gray-800">Polo Tecnológico Oeste</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm">Centro de inovação em Cascavel, especializado em Hardware e Logística.</p>
+                        <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">#Hub</span>
+                        <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">#Oeste</span>
+                    </div>
+
+                    <!-- Card 3: New Idea -->
+                    <div class="bg-white p-6 rounded-xl card-shadow hover:ring-2 hover:ring-sky-500 transition duration-300">
+                        <div class="flex items-center mb-4">
+                            <i class="fa-solid fa-lightbulb text-3xl text-gray-500 mr-4"></i>
+                            <h3 class="text-xl font-semibold text-gray-800">FinEdu Simples</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm">Ideia de app para educação financeira simplificada para microempreendedores.</p>
+                        <span class="inline-block bg-sky-100 text-sky-700 text-xs font-semibold px-3 py-1 rounded-full">#Fintech</span>
+                        <span class="inline-block bg-sky-100 text-sky-700 text-xs font-semibold px-3 py-1 rounded-full">#Educação</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. AUTHENTICATION (Login/Register Forms) -->
+            <section id="auth-view" class="view-section hidden flex justify-center items-start pt-10">
+                <div class="w-full max-w-md bg-white p-8 rounded-xl card-shadow">
+                    <h2 id="auth-title" class="text-3xl font-bold text-gray-800 mb-6 text-center">Entrar na Plataforma</h2>
+
+                    <!-- Mock Messages -->
+                    <div id="auth-message" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
+
+                    <!-- Login Form -->
+                    <form id="login-form">
+                        <div class="mb-4">
+                            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                            <input type="email" id="login-email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                            <input type="password" id="login-password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500" required>
+                        </div>
+                        <button type="submit" class="w-full btn-primary btn-blue">
+                            Acessar
+                        </button>
+                        <p class="mt-4 text-center text-sm text-gray-600">
+                            Não tem conta?
+                            <button type="button" class="text-sky-600 hover:text-sky-800 font-medium" onclick="toggleAuthMode('register')">
+                                Cadastre-se
+                            </button>
+                        </p>
+                    </form>
+
+                    <!-- Registration Form (Hidden by default) -->
+                    <form id="register-form" class="hidden">
+                        <div class="mb-4">
+                            <label for="reg-name" class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                            <input type="text" id="reg-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="reg-email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                            <input type="email" id="reg-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="reg-password" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                            <input type="password" id="reg-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="reg-city" class="block text-sm font-medium text-gray-700 mb-1">Cidade (PR)</label>
+                            <input type="text" id="reg-city" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500" placeholder="Ex: Curitiba, Londrina..." required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="reg-interest" class="block text-sm font-medium text-gray-700 mb-1">Área de Interesse</label>
+                            <select id="reg-interest" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500" required>
+                                <option value="" disabled selected>Selecione uma área</option>
+                                <option value="tech">Tecnologia e Software</option>
+                                <option value="agri">Agronegócio e Biotecnologia</option>
+                                <option value="fint">Finanças e Fintech</option>
+                                <option value="edu">Educação</option>
+                                <option value="health">Saúde e Bem-Estar</option>
+                                <option value="other">Outra</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full btn-primary btn-green">
+                            Cadastrar e Começar
+                        </button>
+                        <p class="mt-4 text-center text-sm text-gray-600">
+                            Já tem conta?
+                            <button type="button" class="text-sky-600 hover:text-sky-800 font-medium" onclick="toggleAuthMode('login')">
+                                Entrar
+                            </button>
+                        </p>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 3. USER FEED (Main Page after Login) -->
+            <section id="feed-view" class="view-section hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Column 1: Main Feed -->
+                    <div class="lg:col-span-2 space-y-6">
+
+                        <!-- Quick Post Button (Mobile/Top) -->
+                        <div class="bg-white p-4 rounded-xl card-shadow lg:hidden">
+                            <button class="w-full btn-primary btn-blue" onclick="showView('post-create')">
+                                <i class="fa-solid fa-plus mr-2"></i> Nova Publicação
+                            </button>
+                        </div>
+
+                        <!-- Mock Post 1 (Text & Image) -->
+                        <div class="bg-white p-6 rounded-xl card-shadow">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-3">M</div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Mariana Silva</p>
+                                    <p class="text-xs text-gray-500">Curitiba • 1h atrás</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-4">
+                                Ótimo evento em Londrina sobre o futuro das Fintechs no Agronegócio! O Paraná está provando ser o celeiro de inovação também. #AgroTech #InovacaoPR
+                            </p>
+                            <img src="https://placehold.co/800x400/0369a1/ffffff?text=Cenário+de+Inovação" alt="Imagem do Post" class="w-full h-auto rounded-lg mb-4">
+                            <div class="flex justify-between text-gray-500">
+                                <button class="hover:text-sky-600 transition duration-150"><i class="fa-solid fa-heart mr-2"></i> Curtir (42)</button>
+                                <button class="hover:text-sky-600 transition duration-150"><i class="fa-solid fa-comment mr-2"></i> Comentar (18)</button>
+                                <button class="hover:text-sky-600 transition duration-150"><i class="fa-solid fa-share-alt mr-2"></i> Compartilhar</button>
+                            </div>
+                        </div>
+
+                        <!-- Mock Post 2 (Text & Link) -->
+                        <div class="bg-white p-6 rounded-xl card-shadow">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-sky-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-3">S</div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Startup CodeWave</p>
+                                    <p class="text-xs text-gray-500">Maringá • 4h atrás</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-4">
+                                Lançamos nossa nova API de processamento de dados para pequenas empresas do PR! Simplificar a gestão é nossa missão. Confira o link abaixo.
+                            </p>
+                            <a href="#" class="block p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150">
+                                <p class="font-semibold text-sky-600">codewave.com.br/api-lancamento</p>
+                                <p class="text-sm text-gray-500">Saiba mais sobre a nova ferramenta de gestão.</p>
+                            </a>
+                            <div class="flex justify-between text-gray-500 mt-4">
+                                <button class="hover:text-sky-600 transition duration-150"><i class="fa-solid fa-heart mr-2"></i> Curtir (120)</button>
+                                <button class="hover:text-sky-600 transition duration-150"><i class="fa-solid fa-comment mr-2"></i> Comentar (35)</button>
+                                <button class="hover:text-sky-600 transition duration-150"><i class="fa-solid fa-share-alt mr-2"></i> Compartilhar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Sidebar -->
+                    <div class="hidden lg:block lg:col-span-1 space-y-6">
+                        <!-- Post Creator -->
+                        <div class="bg-white p-6 rounded-xl card-shadow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Crie algo inovador!</h3>
+                            <button class="w-full btn-primary btn-blue" onclick="showView('post-create')">
+                                <i class="fa-solid fa-plus mr-2"></i> Nova Publicação
+                            </button>
+                        </div>
+
+                        <!-- Top Topics -->
+                        <div class="bg-white p-6 rounded-xl card-shadow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Tópicos de Inovação</h3>
+                            <div class="space-y-2">
+                                <p class="text-sm text-gray-700"><span class="font-bold">#OportunidadesPR</span> <span class="text-xs text-gray-500">(1.2k posts)</span></p>
+                                <p class="text-sm text-gray-700"><span class="font-bold">#MetodologiasAgeis</span> <span class="text-xs text-gray-500">(980 posts)</span></p>
+                                <p class="text-sm text-gray-700"><span class="font-bold">#InvestimentoAnjo</span> <span class="text-xs text-gray-500">(650 posts)</span></p>
+                                <p class="text-sm text-gray-700"><span class="font-bold">#SmartCities</span> <span class="text-xs text-gray-500">(410 posts)</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Suggested Users -->
+                        <div class="bg-white p-6 rounded-xl card-shadow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Sugestões para Seguir</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-sky-600 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3">I</div>
+                                        <div>
+                                            <p class="font-semibold text-sm">Investidor Alfa</p>
+                                            <p class="text-xs text-gray-500">Foz do Iguaçu | Investimento</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-emerald-500 hover:text-emerald-700 text-sm font-medium"><i class="fa-solid fa-user-plus mr-1"></i> Seguir</button>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3">A</div>
+                                        <div>
+                                            <p class="font-semibold text-sm">Ana Toledo</p>
+                                            <p class="text-xs text-gray-500">Ponta Grossa | Dev Frontend</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-emerald-500 hover:text-emerald-700 text-sm font-medium"><i class="fa-solid fa-user-plus mr-1"></i> Seguir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. USER PROFILE PAGE -->
+            <section id="profile-view" class="view-section hidden">
+                <div class="bg-white rounded-xl card-shadow">
+                    <!-- Banner and Profile Info -->
+                    <div class="relative">
+                        <div class="h-32 bg-sky-700 rounded-t-xl"></div>
+                        <div class="p-6 pt-0">
+                            <div class="flex items-end -mt-16 sm:-mt-12">
+                                <div class="w-24 h-24 sm:w-32 sm:h-32 bg-emerald-500 border-4 border-white rounded-full flex items-center justify-center text-white text-4xl font-bold">J</div>
+                                <div class="ml-4 flex-grow">
+                                    <h2 class="text-3xl font-bold text-gray-800 mt-4">João Empreendedor</h2>
+                                    <p class="text-lg text-gray-600">@joao.inovador</p>
+                                </div>
+                                <button class="btn-primary bg-gray-200 text-gray-700 hover:bg-gray-300" onclick="alertMessage('Funcionalidade de edição ativada!')">
+                                    <i class="fa-solid fa-edit mr-2"></i> Editar Perfil
+                                </button>
+                            </div>
+
+                            <div class="mt-4">
+                                <p class="text-gray-700 mb-2">
+                                    <i class="fa-solid fa-map-marker-alt text-sky-600 mr-2"></i>
+                                    Maringá, Paraná
+                                </p>
+                                <p class="text-gray-700 mb-4">
+                                    <i class="fa-solid fa-briefcase text-sky-600 mr-2"></i>
+                                    Fundador da HealthFlow | Engenheiro de Software | Foco em soluções de telemedicina.
+                                </p>
+                                <p class="text-sm text-gray-500">
+                                    <i class="fa-solid fa-calendar-alt mr-1"></i> Membro desde 2023
+                                </p>
+                            </div>
+
+                            <!-- Tabs Navigation -->
+                            <div class="border-b border-gray-200 mt-8">
+                                <nav class="flex space-x-4">
+                                    <button class="tab-btn py-2 px-3 border-b-2 border-sky-600 text-sky-600 font-semibold transition duration-150" data-tab="profile-posts">Postagens</button>
+                                    <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-600 hover:border-sky-600 hover:text-sky-600 font-semibold transition duration-150" data-tab="profile-about">Sobre</button>
+                                    <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-600 hover:border-sky-600 hover:text-sky-600 font-semibold transition duration-150" data-tab="profile-projects">Projetos</button>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs Content -->
+                    <div class="p-6 pt-0">
+                        <div id="profile-posts" class="tab-content">
+                            <p class="text-lg font-medium text-gray-800 mb-4">Postagens Recentes</p>
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-3">
+                                <p class="text-gray-700">Primeiro post do ano! Em busca de um co-founder para a área de marketing.</p>
+                                <p class="text-xs text-gray-500 mt-1">2 dias atrás</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <p class="text-gray-700">Artigo muito bom sobre a descentralização da inovação no PR.</p>
+                                <p class="text-xs text-gray-500 mt-1">1 semana atrás</p>
+                            </div>
+                        </div>
+
+                        <div id="profile-about" class="tab-content hidden">
+                            <p class="text-lg font-medium text-gray-800 mb-4">Detalhes Pessoais</p>
+                            <p class="text-gray-700">
+                                Apaixonado por tecnologia e saúde. Acredito que o futuro do Paraná está na integração das universidades com o mercado. Buscando conexões na área de IA e Machine Learning.
+                            </p>
+                            <p class="mt-4 text-sm text-gray-500">Área de Interesse Principal: Saúde e Tecnologia.</p>
+                        </div>
+
+                        <div id="profile-projects" class="tab-content hidden">
+                            <p class="text-lg font-medium text-gray-800 mb-4">Projetos Atuais</p>
+                            <ul class="list-disc ml-5 text-gray-700 space-y-2">
+                                <li>**HealthFlow (Principal):** Plataforma de agendamento e teleconsultas com foco no interior.</li>
+                                <li>**InovaMentoria (Secundário):** Projeto voluntário para mentorar jovens empreendedores de Londrina.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. POST CREATION PAGE -->
+            <section id="post-create-view" class="view-section hidden flex justify-center items-start pt-10">
+                <div class="w-full max-w-2xl bg-white p-8 rounded-xl card-shadow">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Criar Nova Publicação</h2>
+
+                    <form id="post-create-form">
+                        <div class="mb-4">
+                            <textarea id="post-text" rows="5" placeholder="Compartilhe suas ideias, novidades ou busque por colaboração..." class="w-full p-4 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500 text-gray-700" required></textarea>
+                        </div>
+                        <div class="mb-6 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-sky-500 transition duration-150 cursor-pointer">
+                            <input type="file" id="post-image" class="hidden" accept="image/*">
+                            <label for="post-image" class="text-sky-600 font-semibold cursor-pointer">
+                                <i class="fa-solid fa-cloud-upload-alt mr-2"></i> Adicionar Imagem (Mock)
+                            </label>
+                            <p id="file-name" class="text-sm text-gray-500 mt-2">Nenhum arquivo selecionado.</p>
+                        </div>
+                        <button type="submit" class="w-full btn-primary btn-green">
+                            <i class="fa-solid fa-paper-plane mr-2"></i> Publicar
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 6. MESSAGES PAGE -->
+            <section id="messages-view" class="view-section hidden h-[70vh]">
+                <div class="flex h-full bg-white rounded-xl card-shadow overflow-hidden">
+                    <!-- Left Sidebar: Conversations List -->
+                    <div class="w-full sm:w-1/3 border-r border-gray-200 custom-scroll overflow-y-auto">
+                        <div class="p-4 border-b border-gray-200 sticky top-0 bg-white">
+                            <h3 class="text-xl font-bold text-gray-800">Mensagens Diretas</h3>
+                        </div>
+                        <!-- Mock Conversation 1 -->
+                        <div class="p-4 border-b border-gray-100 bg-sky-50">
+                            <p class="font-semibold text-gray-800">Investidor Anjo (Novo)</p>
+                            <p class="text-sm text-gray-600 truncate">Sua ideia de AgriTech me interessou...</p>
+                        </div>
+                        <!-- Mock Conversation 2 -->
+                        <div class="p-4 border-b border-gray-100 hover:bg-gray-50 transition duration-100">
+                            <p class="font-semibold text-gray-800">Ana Toledo</p>
+                            <p class="text-sm text-gray-500 truncate">Sobre a reunião de amanhã...</p>
+                        </div>
+                        <!-- Mock Conversation 3 -->
+                        <div class="p-4 border-b border-gray-100 hover:bg-gray-50 transition duration-100">
+                            <p class="font-semibold text-gray-800">Startup CodeWave</p>
+                            <p class="text-sm text-gray-500 truncate">O lançamento foi um sucesso!</p>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Message Window -->
+                    <div class="hidden sm:flex sm:flex-col sm:w-2/3">
+                        <!-- Chat Header -->
+                        <div class="p-4 border-b border-gray-200 flex items-center bg-gray-50">
+                            <div class="w-10 h-10 bg-emerald-500 rounded-full mr-3"></div>
+                            <h3 class="font-semibold text-gray-800">Investidor Anjo</h3>
+                        </div>
+
+                        <!-- Chat Body (Mock Messages) -->
+                        <div class="flex-grow p-6 space-y-4 custom-scroll overflow-y-auto bg-gray-50">
+                            <!-- Incoming Message -->
+                            <div class="flex justify-start">
+                                <div class="max-w-xs lg:max-w-md bg-gray-200 p-3 rounded-t-xl rounded-br-xl text-gray-800">
+                                    <p>Olá, João! Li seu perfil e sua ideia de telemedicina para o interior do PR me chamou a atenção.</p>
+                                    <p class="text-xs text-gray-500 mt-1 text-right">10:05</p>
+                                </div>
+                            </div>
+                            <!-- Outgoing Message -->
+                            <div class="flex justify-end">
+                                <div class="max-w-xs lg:max-w-md bg-sky-600 p-3 rounded-t-xl rounded-bl-xl text-white">
+                                    <p>Que ótimo! Fico feliz pelo seu interesse. Como podemos conversar melhor sobre isso?</p>
+                                    <p class="text-xs text-sky-200 mt-1 text-right">10:07</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Input -->
+                        <div class="p-4 border-t border-gray-200 bg-white">
+                            <div class="flex items-center">
+                                <input type="text" placeholder="Digite sua mensagem..." class="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:ring-sky-500 focus:border-sky-500">
+                                <button class="ml-3 w-10 h-10 btn-primary btn-blue rounded-full flex items-center justify-center">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Fallback -->
+                    <div class="sm:hidden w-full flex items-center justify-center p-8 text-center text-gray-500">
+                        <p>Selecione uma conversa ao lado para visualizar o chat completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. NOTIFICATIONS PAGE -->
+            <section id="notifications-view" class="view-section hidden flex justify-center items-start pt-10">
+                <div class="w-full max-w-3xl bg-white p-8 rounded-xl card-shadow">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Suas Notificações</h2>
+
+                    <div class="space-y-4">
+                        <!-- Notification 1: Like -->
+                        <div class="flex items-start p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition duration-150">
+                            <i class="fa-solid fa-heart text-red-500 text-xl mr-4 mt-1"></i>
+                            <div>
+                                <p class="text-gray-700"><span class="font-semibold">Pedro Moraes</span> curtiu sua postagem sobre o Polo Tecnológico de Ponta Grossa.</p>
+                                <p class="text-xs text-gray-500 mt-1">20 minutos atrás</p>
+                            </div>
+                        </div>
+                        <!-- Notification 2: Comment -->
+                        <div class="flex items-start p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition duration-150">
+                            <i class="fa-solid fa-comment text-sky-600 text-xl mr-4 mt-1"></i>
+                            <div>
+                                <p class="text-gray-700"><span class="font-semibold">Ana Toledo</span> comentou: "Excelente iniciativa! Podemos colaborar?" na sua ideia.</p>
+                                <p class="text-xs text-gray-500 mt-1">1 hora atrás</p>
+                            </div>
+                        </div>
+                        <!-- Notification 3: Follow -->
+                        <div class="flex items-start p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition duration-150">
+                            <i class="fa-solid fa-user-plus text-emerald-500 text-xl mr-4 mt-1"></i>
+                            <div>
+                                <p class="text-gray-700"><span class="font-semibold">Investidor Alfa</span> começou a te seguir.</p>
+                                <p class="text-xs text-gray-500 mt-1">5 horas atrás</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. SETTINGS PAGE -->
+            <section id="settings-view" class="view-section hidden flex justify-center items-start pt-10">
+                <div class="w-full max-w-3xl bg-white p-8 rounded-xl card-shadow">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Configurações da Conta</h2>
+
+                    <div class="space-y-6">
+                        <!-- Language (Fixed) -->
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Idioma</h3>
+                            <p class="text-gray-700">Idioma da Plataforma: <span class="font-bold text-sky-600">Português (Brasil)</span> (Fixo)</p>
+                        </div>
+
+                        <!-- Privacy -->
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Privacidade</h3>
+                            <div class="flex justify-between items-center py-2">
+                                <label for="privacy-profile" class="text-gray-700">Tornar perfil público</label>
+                                <input type="checkbox" id="privacy-profile" class="h-5 w-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500" checked>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <label for="privacy-messages" class="text-gray-700">Permitir mensagens de não-seguidores</label>
+                                <input type="checkbox" id="privacy-messages" class="h-5 w-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500">
+                            </div>
+                        </div>
+
+                        <!-- Account Preferences -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Preferências da Conta</h3>
+                            <div class="flex justify-between items-center py-2">
+                                <label for="pref-email" class="text-gray-700">Receber notificações por e-mail</label>
+                                <input type="checkbox" id="pref-email" class="h-5 w-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500" checked>
+                            </div>
+                            <button class="mt-4 btn-primary bg-red-100 text-red-600 hover:bg-red-200" onclick="alertMessage('Sua senha será redefinida. Funcionalidade de mock.')">
+                                Redefinir Senha
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer (Shared) -->
+        <footer class="bg-gray-800 mt-12 py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-white">
+                    <div>
+                        <h4 class="font-semibold mb-3 text-sky-400">Paraná InovaNet</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li><a href="#" class="hover:text-white" onclick="alertMessage('Link Sobre - Funcionalidade Mock')">Sobre</a></li>
+                            <li><a href="#" class="hover:text-white" onclick="alertMessage('Link Contato - Funcionalidade Mock')">Contato</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-3 text-sky-400">Legal</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li><a href="#" class="hover:text-white" onclick="alertMessage('Link Termos de Uso - Funcionalidade Mock')">Termos de Uso</a></li>
+                            <li><a href="#" class="hover:text-white" onclick="alertMessage('Link Política de Privacidade - Funcionalidade Mock')">Política de Privacidade</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-gray-700 text-sm text-gray-400 text-center">
+                    © 2025 Paraná InovaNet – Rede de Startups e Ideias Inovadoras. Todos os direitos reservados.
+                </div>
+            </div>
+        </footer>
+
+        <!-- Custom Alert/Message Modal -->
+        <div id="custom-alert" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center z-[100]">
+            <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full">
+                <p id="alert-text" class="text-gray-800 mb-4 text-center"></p>
+                <button class="w-full btn-primary btn-blue" onclick="closeAlert()">
+                    Entendi
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LINK PARA O JAVASCRIPT LOGIC -->
+    <script src="script.js"></script>
+</body>
+</html>
