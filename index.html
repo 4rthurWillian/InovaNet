@@ -200,6 +200,63 @@
                         </div>
                         <div class="mb-6">
                             <label for="reg-interest" class="block text-sm font-medium text-gray-700 mb-1">Área de Interesse</label>
+                            <!-- Adicionar após o campo de área de interesse -->
+<div class="mb-6">
+    <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Conta</label>
+    <div class="flex space-x-4">
+        <label class="flex items-center">
+            <input type="radio" name="account-type" value="empreendedor" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300" checked>
+            <span class="ml-2 text-gray-700">Empreendedor</span>
+        </label>
+        <label class="flex items-center">
+            <input type="radio" name="account-type" value="investidor" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300">
+            <span class="ml-2 text-gray-700">Investidor</span>
+        </label>
+    </div>
+</div>
+
+<!-- Campos específicos para investidores (inicialmente hidden) -->
+<div id="investor-fields" class="hidden space-y-4 mb-6">
+    <div>
+        <label for="reg-investment-range" class="block text-sm font-medium text-gray-700 mb-1">Faixa de Investimento</label>
+        <select id="reg-investment-range" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500">
+            <option value="" disabled selected>Selecione uma faixa</option>
+            <option value="ate-50k">Até R$ 50.000</option>
+            <option value="50k-200k">R$ 50.000 - R$ 200.000</option>
+            <option value="200k-500k">R$ 200.000 - R$ 500.000</option>
+            <option value="500k-plus">Acima de R$ 500.000</option>
+        </select>
+    </div>
+    <div>
+        <label for="reg-investment-sectors" class="block text-sm font-medium text-gray-700 mb-1">Setores de Interesse (múltipla escolha)</label>
+        <div class="space-y-2">
+            <label class="flex items-center">
+                <input type="checkbox" value="tech" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                <span class="ml-2 text-sm text-gray-700">Tecnologia e Software</span>
+            </label>
+            <label class="flex items-center">
+                <input type="checkbox" value="agri" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                <span class="ml-2 text-sm text-gray-700">Agronegócio e Biotecnologia</span>
+            </label>
+            <label class="flex items-center">
+                <input type="checkbox" value="health" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                <span class="ml-2 text-sm text-gray-700">Saúde e Bem-Estar</span>
+            </label>
+            <label class="flex items-center">
+                <input type="checkbox" value="education" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                <span class="ml-2 text-sm text-gray-700">Educação</span>
+            </label>
+            <label class="flex items-center">
+                <input type="checkbox" value="sustainability" class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                <span class="ml-2 text-sm text-gray-700">Sustentabilidade</span>
+            </label>
+        </div>
+    </div>
+    <div>
+        <label for="reg-investor-bio" class="block text-sm font-medium text-gray-700 mb-1">Bio do Investidor</label>
+        <textarea id="reg-investor-bio" rows="3" placeholder="Conte um pouco sobre sua experiência como investidor..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500"></textarea>
+    </div>
+</div>
                             <select id="reg-interest" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500" required>
                                 <option value="" disabled selected>Selecione uma área</option>
                                 <option value="tech">Tecnologia e Software</option>

@@ -131,6 +131,24 @@ function toggleAuthMode(mode) {
     showView('auth');
 }
 
+/** Mostrar/ocultar campos de investidor */
+function toggleInvestorFields() {
+    const accountType = document.querySelector('input[name="account-type"]:checked').value;
+    const investorFields = document.getElementById('investor-fields');
+    
+    if (accountType === 'investidor') {
+        investorFields.classList.remove('hidden');
+        // Tornar campos obrigatórios
+        document.getElementById('reg-investment-range').required = true;
+        document.getElementById('reg-investor-bio').required = true;
+    } else {
+        investorFields.classList.add('hidden');
+        // Remover obrigatoriedade
+        document.getElementById('reg-investment-range').required = false;
+        document.getElementById('reg-investor-bio').required = false;
+    }
+}
+
 /** Mocks the login process. */
 function handleLogin(event) {
     event.preventDefault();
@@ -166,22 +184,60 @@ function handleRegister(event) {
     // Simple validation mock
     const nameInput = document.getElementById('reg-name');
     const emailInput = document.getElementById('reg-email');
+    const passwordInput = document.getElementById('reg-password');
 
-    if (!nameInput || !emailInput) return;
+    if (!nameInput || !emailInput || !passwordInput) return;
 
     const name = nameInput.value;
     const email = emailInput.value;
+    const password = passwordInput.value;
 
-    if (name.trim() === '' || email.trim() === '') {
+    if (name.trim() === '' || email.trim() === '' || password.trim() === '') {
         messageBox.textContent = "Preencha todos os campos obrigatórios.";
         messageBox.className = 'mb-4 p-3 rounded-lg text-sm text-center bg-red-100 text-red-700';
         messageBox.classList.remove('hidden');
         return;
     }
 
+    // Coletar dados do tipo de conta
+    const accountType = document.querySelector('input[name="account-type"]:checked').value;
+    let userData = {
+        name: name,
+        email: email,
+        accountType: accountType
+    };
+
+    // Se for investidor, coletar dados adicionais
+    if (accountType === 'investidor') {
+        const investmentRange = document.getElementById('reg-investment-range').value;
+        const investorBio = document.getElementById('reg-investor-bio').value;
+        
+        // Coletar setores selecionados
+        const selectedSectors = [];
+        document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+            selectedSectors.push(checkbox.value);
+        });
+
+        userData.investorInfo = {
+            investmentRange: investmentRange,
+            sectors: selectedSectors,
+            bio: investorBio
+        };
+    }
+
     // Success mock
     isLoggedIn = true;
-    alertMessage("Cadastro concluído! Seja bem-vindo à Paraná InovaNet.");
+    
+    // Mensagem personalizada baseada no tipo de conta
+    if (accountType === 'investidor') {
+        alertMessage("Cadastro de investidor concluído! Bem-vindo ao ecossistema de inovação do Paraná.");
+    } else {
+        alertMessage("Cadastro concluído! Seja bem-vindo à Paraná InovaNet.");
+    }
+    
+    // Salvar dados do usuário (em um cenário real, seria enviado para o backend)
+    localStorage.setItem('currentUser', JSON.stringify(userData));
+    
     showView('feed');
 }
 
@@ -264,7 +320,6 @@ function updateFileName() {
     }
 }
 
-
 // --- INITIALIZATION ---
 function init() {
     // Set up form submission listeners
@@ -283,6 +338,12 @@ function init() {
     // Set up profile tab listeners
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', switchProfileTab);
+    });
+
+    // Adicionar listener para os radio buttons de tipo de conta
+    const accountTypeRadios = document.querySelectorAll('input[name="account-type"]');
+    accountTypeRadios.forEach(radio => {
+        radio.addEventListener('change', toggleInvestorFields);
     });
 
     // Start on the home view (public)

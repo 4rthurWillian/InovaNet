@@ -51,3 +51,13 @@ body {
 .btn-green:hover {
     background-color: #059669; /* emerald-600 */
 }
+
+.investor-badge {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+.entrepreneur-badge {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+}
